@@ -14,10 +14,10 @@ public class Mean {
     @GeneratedValue(generator="idGenerator") //使用uuid的生成策略
     private String id;
     @Basic
-    @Column(name="tran")
+    @Column(name="tran",columnDefinition = "Text")
     private String tran;
     @Basic
-    @Column(name="mean")
+    @Column(name="mean",columnDefinition = "Text")
     private String mean;
     @Basic
     @Column(name="posp")

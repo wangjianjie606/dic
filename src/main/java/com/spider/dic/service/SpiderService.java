@@ -123,7 +123,7 @@ public class SpiderService {
     }
 
     private void setUnCatchWord(String line, Set<String> unCatchWord){
-        String newLine = line.replaceAll("[^a-zA-Z,\\r]"," ").toLowerCase();
+        String newLine = line.replaceAll(","," ").replaceAll("[^a-zA-Z,\\r]"," ").toLowerCase();
         String[] ss = newLine.split(" ");
         for (String s: ss) {
             if(!StringUtils.isEmpty(s)) unCatchWord.add(s);
@@ -143,14 +143,14 @@ public class SpiderService {
 
     public static void main(String[] args) {
 
-        String yuanlaiString = "Contents " + "\n" +
+        String yuanlaiString = "Contents, " + "\n" +
                 "Preface " +"\n" +
                 "Chapter 1: Getting started with the ASP.NET MVC Framework" ;
         System.out.println("原来的：");
         System.out.println(yuanlaiString);
 
         System.out.println("替换过后的：");
-        String newString = yuanlaiString.replaceAll("[^a-zA-Z,\\r]", " ").toLowerCase();
+        String newString = yuanlaiString.replaceAll(","," ").replaceAll("[^a-zA-Z,\\r]", " ").toLowerCase();
         System.out.print(newString);
         String[] s = newString.split(" ");
 

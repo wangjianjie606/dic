@@ -13,10 +13,10 @@ public class Example {
     @GeneratedValue(generator="idGenerator") //使用uuid的生成策略
     private String id;
     @Basic
-    @Column(name="ex")
+    @Column(name="ex",columnDefinition = "Text")
     private String ex;
     @Basic
-    @Column(name="tran")
+    @Column(name="tran",columnDefinition = "Text")
     private String tran;
 
     @ManyToOne(cascade=CascadeType.ALL)
