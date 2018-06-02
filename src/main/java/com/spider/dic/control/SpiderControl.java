@@ -36,11 +36,11 @@ public class SpiderControl {
                 break;
             }
             for (String word: unCatchWordList) {
-                try {
-                    Thread.sleep(500*rand.nextInt(10));
-                } catch(InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
+//                try {
+//                    Thread.sleep(100*rand.nextInt(5));
+//                } catch(InterruptedException ex) {
+//                    Thread.currentThread().interrupt();
+//                }
                 findWord(word);
             }
             this.unCatchWordList = null;
@@ -93,7 +93,8 @@ public class SpiderControl {
             //conn.header("Mimetype","application/json");
             return conn.ignoreContentType(true).get();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("=====================================>连接出错");
             return null;
         }
     }

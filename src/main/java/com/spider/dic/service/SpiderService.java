@@ -39,9 +39,16 @@ public class SpiderService {
             return;
         }
 
-        JSONObject symbols = jsonObject.getJSONObject("baesInfo")
-                .getJSONArray("symbols")
-                .getJSONObject(0);
+        JSONObject symbols ;
+        try{
+            symbols = jsonObject.getJSONObject("baesInfo")
+                    .getJSONArray("symbols")
+                    .getJSONObject(0);
+        }catch (NullPointerException e){
+            this.setUnCatchWordState(str,"N");
+            System.out.println("=====================================>未查询到该单词的意思");
+            return;
+        }
         Set<Symbol> enSymbol = getSymbol(symbols.getString("ph_en"),word,true);
         Set<Symbol> amSymbol = getSymbol(symbols.getString("ph_am"),word,false);
         word.setAmSymbols(amSymbol);
@@ -91,7 +98,8 @@ public class SpiderService {
                     .getJSONObject(0)
                     .getJSONArray("entry");
         }catch (NullPointerException e){
-            e.printStackTrace();
+            System.out.println("=====================================>未查询到该单词的意思");
+//            e.printStackTrace();
             return null;
         }
 
