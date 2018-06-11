@@ -5,6 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.spider.dic.dao.UnCatchWordDao;
 import com.spider.dic.dao.WordDao;
 import com.spider.dic.entity.*;
+import com.spider.dic.vo.ExampleVO;
+import com.spider.dic.vo.MeanVO;
+import com.spider.dic.vo.SymbolVO;
+import com.spider.dic.vo.WordVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -60,6 +65,48 @@ public class SpiderService {
 
         UnCatchWord w = unCatchWordDao.findUnCatchWordByWord(str);
         unCatchWordDao.delete(w.getId());
+    }
+
+    public void saveUnCatchWord(String unCatchWord){
+        Set<String> unCatchWrods = new HashSet<>();
+        setUnCatchWord(unCatchWord,unCatchWrods);
+        this.saveUnCatchWord(unCatchWrods);
+    }
+
+    public WordVO findWord(String word){
+        WordVO ww = new WordVO();
+        Word w = wordDao.findWordByWordEquals(word);
+        BeanUtils.copyProperties(w,ww,"enSymbols","amSymbols","means");
+        Set<SymbolVO> enSymbols = new HashSet<>();
+        Set<SymbolVO> amSymbols = new HashSet<>();
+        Set<MeanVO> means = new HashSet<>();
+        w.getAmSymbols().forEach(item->{
+            SymbolVO vo = new SymbolVO();
+            BeanUtils.copyProperties(item, vo);
+            amSymbols.add(vo);
+        });
+        w.getEnSymbols().forEach(item->{
+            SymbolVO vo = new SymbolVO();
+            BeanUtils.copyProperties(item, vo);
+            enSymbols.add(vo);
+        });
+        w.getMeans().forEach(item->{
+            MeanVO vo = new MeanVO();
+            BeanUtils.copyProperties(item, vo, "ex");
+            Set<ExampleVO> ex = new HashSet<>();
+            item.getEx().forEach(ite->{
+                ExampleVO v = new ExampleVO();
+                BeanUtils.copyProperties(ite,v);
+                ex.add(v);
+            });
+            vo.setEx(ex);
+            means.add(vo);
+        });
+        ww.setAmSymbols(amSymbols);
+        ww.setEnSymbols(enSymbols);
+        ww.setMeans(means);
+
+        return ww;
     }
 
     private void saveUnCatchWord(Set<String> unCatchWord ){

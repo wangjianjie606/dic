@@ -6,10 +6,34 @@
     <title>Title</title>
 </head>
 <body>
-    test!!!!
+ 新增未抓取单词 <input id="addWords" /> <button id="add">新增</button>
+<br/>
+ 查询单词 <input id="findWord" /> <button id="find">查询</button>
+ <br/>
+<button id="start">start fetch</button>
 
-<button id="start">start</button>
+ <ul id="means">
+
+
+ </ul>
 <script>
+
+    $("#find").click(()=>{
+        const word = findWord.value;
+        $("#means").innerHTML = "";
+        $.post("/dic/find",{word},(d)=>{
+            findWord.value="";
+
+        });
+    });
+
+    $("#add").click(()=>{
+        const words = addWords.value;
+        $.post("/dic/add",{words},()=>{
+            addWords.value = "";
+        } );
+    });
+
     $("#start").click(()=>{
         $.post({url:"/dic/start"});
     });

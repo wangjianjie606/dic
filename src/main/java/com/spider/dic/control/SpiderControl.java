@@ -3,13 +3,17 @@ package com.spider.dic.control;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.spider.dic.entity.Word;
 import com.spider.dic.service.SpiderService;
+import com.spider.dic.vo.WordVO;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
@@ -28,6 +32,19 @@ public class SpiderControl {
         spider();
     }
 
+    @RequestMapping(value="/add")
+    public void addWords(@RequestParam String words){
+        if(!StringUtils.hasLength(words)){return;}
+
+        spiderService.saveUnCatchWord(words);
+    }
+
+    @RequestMapping(value="/find")
+    public WordVO findWrod(@RequestParam String word){
+        if(!StringUtils.hasLength(word)){return null;}
+
+        return spiderService.findWord(word);
+    }
 
     private void spider(){
         while(unCatchWordList==null){
