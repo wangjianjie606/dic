@@ -4,6 +4,21 @@
     <script type="text/javascript" src="./../jq/jquery-3.3.1.js"></script>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .mean {
+            margin-top: 10px;
+        }
+
+        #means {
+            background-color: azure;
+            font-size: 12px;
+        }
+
+        .symbol {
+            margin-right: 5px;
+        }
+
+    </style>
 </head>
 <body>
  新增未抓取单词 <input id="addWords" /> <button id="add">新增</button>
@@ -12,18 +27,35 @@
  <br/>
 <button id="start">start fetch</button>
 
- <ul id="means">
-
-
- </ul>
+ <div id="means">
+ </div>
 <script>
 
     $("#find").click(()=>{
         const word = findWord.value;
-        $("#means").innerHTML = "";
-        $.post("/dic/find",{word},(d)=>{
+        means.innerHTML = "";
+        $.post("/dic/find",{word},(data)=>{
             findWord.value="";
 
+            let s_am = "[美]  ";
+            data.amSymbols && data.amSymbols.forEach(s=>{
+                s_am += "<span class='symbol'>["+ s.symbol +"]</span>";
+            });
+
+            let s_en = "      [英]  ";
+            data.enSymbols && data.enSymbols.forEach(s=>{
+                s_en += "<span class='symbol'>["+ s.symbol +"]</span>";
+            });
+            means.innerHTML += "<p>" + s_am + s_en + "</p><br/>";
+
+
+            data.means.forEach(d=>{
+
+                means.innerHTML += "<div class='mean'>"+
+                    "<p>"+ d.mean + "</p>"+
+                    "<p>"+"<span>"+ d.tran +"</span></p>" +
+                "</div>";
+            });
         });
     });
 
